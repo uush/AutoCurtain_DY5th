@@ -1,0 +1,87 @@
+#define dirPin 5
+#define stepPin 6
+#define stepsPerRevolution 200
+#define _CRT_SECURE_NO_WARNINGS    // scanf 보안 경고로 인한 컴파일 에러 방지
+#include <stdio.h>
+#define HIGH 1
+#define LOW 0
+// Length 봉 길이는 step수 기준으로
+int sw,sw_1,sw_2,sw0,sw3,sw5,sw10,sw6;
+/*스위치 새로 정의했으니 헷갈리지 말아주세요~!~!
+ *(원래의 코드는 로터리엔코더의 스위치를 포함했음) 
+ * 중요!!! sw에 관하여 : sw에 들어갈 답은 sw0,sw3,sw5,sw10 중에서 선택되어야 합니다.(0,30,50,100% 가림 선택)
+ * sw를 두 가지로 나누었는데, 그 이유는 아래에서 알 수 있습니다.
+ * sw6 : 사용자가 봉 길이를 직접 입력할 것인지 (LOW : 직접입력), 봉 길이는 Length에 저장*/
+int sw_former,sw_new; //각각 이전 목표, 현재 목표
+int initial,fin; //initial은 현재위치,fin은 목표위치임. 
+void setup() 
+{
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  pinMode(sw,INPUT);
+  pinMode(sw6,INPUT);
+}
+
+void loop() 
+{ 
+  if (digitalRead(sw6)==HIGH)
+   {
+   //동현님 part. //스텝수기준으로!!
+   }
+  if (digitalRead(sw6)==LOW)
+   { int main()
+    {
+      int Length;
+        printf("길이를 입력하세요(스텝수기준): "); // step수 기준으로
+        scanf("%d", &Length);    // 표준 입력을 받아서 변수에 저장
+        print(Length);
+        return 0;
+     }
+   }
+//______________________________________________________________________________[봉 길이 측정완료됨]
+  int scrn_0 = 0;
+  int scrn_30 = Length*0.3
+  int scrn_50 = Length*0.5
+  int scrn_100 =Length 
+  
+  int initial = 0
+  if (digitalRead(sw)==1)//"가림도를 선택하면"
+   {
+      int sw0 = digitalRead(sw0); //가림도 0%를 선택하면 sw0에 1저장
+      int sw3 = digitalRead(sw3);
+      int sw5 = digitalRead(sw5);
+      int sw10 = digitalRead(sw10);
+      int sw_1 = sw3 + sw5;
+      int sw_2 = sw0 + sw10;//만약 30%를 선택한다면 sw_1에는 0, sw_2에는 1이 입력됨. 즉 or의 연산자 '|'를 사용한 것입니다.
+    
+      if sw_1
+      {
+        if sw3
+          fin = scrn_30;
+        else 
+          fin = scrn_50;
+      }
+      else
+      {
+        if sw0
+          fin = 0;
+        else 
+          fin = scrn_100;
+      }
+      
+      int steps_move = fin - initial; 
+      direct = (steps_move>0) ? HIGH : LOW ;
+      digitalWrite(dirpin, direct);
+      
+      for (int i = 0; i < 5 * stepsPerRevolution; i++) 
+      {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(500);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(500);
+      }
+    
+   } 
+   fin = initial
+   
+}
