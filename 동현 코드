@@ -1,0 +1,103 @@
+#include<SoftwareSerial>
+
+#define stepp 4 
+#define dir 5
+#define m_switch 6
+#define encoder_pin_a 2
+#define encoder_pin_b 3
+
+SoftwareSerial BTserial(0,1); 
+
+void setup() {
+  Serial.begin(9600);
+  BTserial.begin(9600);
+  pinMode(stepp,OUTPUT);
+  pinMode(dir,OUTPUT);
+  int encount=0;
+  int low=0,mid,high;
+  attachInterrupt(0,EncoderA,CHANGE);
+  attachInterrupt(1,EncoderB,CHANGE);
+}
+
+void loop() {
+  if(BTserial.available()){
+    char index = BTserial.read();
+    switch(index){
+      case 'a':
+      digitalWrite(m_switch,HIGH);
+      while(1){
+      if(BTserial.available()){
+          int data = BTserial.read();
+          if(data == 2){
+          digitalWrite(dir,HIGH);
+          delayMicroseconds(1000);
+          digitalWrite(stepp,LOW);
+          delayMicroseconds(1000);
+          }
+          else if(data == 1){
+          digitalWrite(dir,LOW);
+          digitalWrite(stepp,HIGH);
+          delayMicroseconds(1000);
+          digitalWrite(stepp,LOW);
+          delayMicroseconds(1000);
+          }
+          else if(data == 3){
+          digitalWrite(m_switch,LOW);
+          int encount_f = encount;
+          Serial.println(encount_f);
+          mid = encount_f/2;
+          high = encount_f;
+          break;
+          }
+        }
+    }
+    break;
+    
+     case 'b':
+      encount = 0;
+      encount_f = 0;
+      break;
+      
+     case 'c':
+     case 'd':
+    }
+
+
+void EncoderA(){
+  if(digitalRead(encoder_pin_a) == HIGH)){
+    if(digitalRead(encoder_pin_b) == LOW){
+      encount +=1;
+    else{
+       encount -=1 ;
+      }
+    }
+  }
+  else{
+    if(digitalRead(encoder_b) == HIGH){
+      encount +=1;
+    }
+    else{
+      encount -=1;
+    }
+  }
+}
+
+void EncoderB(){
+  if(digitalRead(encoder_pin_b) == HIGH)){
+    if(digitalRead(encoder_pin_a) == HIGH){
+      encount +=1;
+    else{
+       encount -=1 ;
+      }
+    }
+  }
+  else{
+    if(digitalRead(encoder_A) == LOW){
+      encount +=1;
+    }
+    else{
+      encount -=1;
+      }
+    }
+  }
+}
