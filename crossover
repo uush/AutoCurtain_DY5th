@@ -1,0 +1,81 @@
+/*논의사항
+1. 인터럽트의 사용처 : 엔코더 vs 블루투스 모듈
+2. 그에 따른 핀 배정 변경
+3. 그 외 포함되지 않은 부분 (!!로 표시된 파트)
+4. 의도치 않은 외력 발생 대비 
+*/
+
+#include <stdio.h>
+#include<SoftwareSerial>
+#include<list>
+
+#define stepPin 4 
+#define dirPin 5
+#define m_switch 6
+#define interruptPin = 2 //bluetooth의 TX,아두이노의 RX
+#define HIGH 1
+#define LOW 0
+#define _CRT_SECURE_NO_WARNINGS    // scanf 보안 경고로 인한 컴파일 에러 방지
+
+SoftwareSerial BTSerial(2,3); 
+
+void setup() 
+{
+  Serial.begin(9600);
+  BTSerial.begin(9600);
+  pinMode(stepPin,OUTPUT);
+  pinMode(dirPin,OUTPUT);
+  pinMode(m_switch,INPUT);
+  int encount=0;
+  int low=0,mid,high;
+  int listRod[]={};
+  list<int>listArvl; //queue를 사용해야 이상적이지만, 우리는 그냥 수시로 resset버튼 누릅시다...^^ 프로토타입이니까요 
+  listArvl.push_back(0);//listArvl=[0]
+  attachInterrupt(digitalPinToInterrupt(interruptPin), mode_semiAuto, RISING);
+}
+
+void loop() 
+{
+    //봉길이 측정(엔코더 이용)
+    //엔코더!!
+
+    if(BTSerial.available())
+    {
+        char index = BTserial.read();//index는 3,4 중 하나. 3 - "자동모드선택"버튼이 선택되었을 떄. 4- 그 반대
+        switch(index)
+        {
+            case '3': // 자동모드
+                ///센서파트!!
+                listArvl.push_back(listRod[index_mode]);
+                //모터 전원 차단해야함!!
+            break;
+
+            case '4'://반자동 모드
+                //모터 전원 차단 유지해야함!!                
+                listArvl.push_back(listRod[index_mode]);
+            break;
+        }
+    }
+    
+}
+
+void mode_semiAuto() //인터럽트로 시작될 함수
+{
+  if(BTSerial.available())
+  {
+    char index_mode = BTSerial.parseInt();//index_mode는 0,1,2 중 하나
+    int steps = listRod[index_mode] - listArvl[-1];
+    int direct = (steps_move>0) ? HIGH : LOW ;
+    digitalWrite(dirpin, direct); //positive steps : Cw, negative steps : CCW
+
+    for (int i = 0; i < steps; i++) //steps에 저장된 만큼 이동함
+      {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(500);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(500);
+      }
+    listArvl.push_back(listRod[index_mode]);
+    //모터 전원 차단해야함!!
+  }
+}
