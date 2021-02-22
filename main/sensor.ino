@@ -1,13 +1,15 @@
 #include "sensor.h"
 #include "pinnum.h"
 #include <DHT.h>
+#define DHTTYPE DHT11
 
-extern DHT dht;
+DHT dht(DHTPIN,DHTTYPE);
 
-void readSensor(int * cds, int * temp){
+void readSensor(int * cds, int * temp)
+{
   * cds = analogRead(CDS); 
   * temp = dht.readTemperature(); 
-  }
+}
 
 bool Check_condition(int temp, int temp_th, bool tempMorethan, int cds, int cds_th, bool cdsMorethan, bool And)
 {
