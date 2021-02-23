@@ -1,0 +1,139 @@
+/*
+if 가림도 != 0 or extForce()=있 (가림도 버튼(0,50,100 즉 반자동)이 눌리거나 외력(인간의 노동력 등)이 개입되면 자동모드를 해제한다.)
+    (반자동 혹은 수동모드)
+    if 가림도 != 0
+        반자동 모드
+    else 
+        수동모드(모터전원차단)
+else (즉 가림도 버튼도 안눌려있고 외력도 개입되지 않았다)
+모드 전환은 위와 같은 느낌
+
+블루투스통신 
+0,1,2 -> 가림도. screen 함수에서 사용. 각각 0,50,100%
+4 -> 반자동 모드를 선택했을 때 블루투스가 아두이노로 입력. 
+*/
+
+//#include <stdio.h> 주석 뗄 것
+//#include<SoftwareSerial> 주석 뗄 것
+
+#define stepp 4 
+#define dir 5
+#define m_switch 6
+#define encoder_pin_a 2
+#define encoder_pin_b 3
+SoftwareSerial BTSerial(10,11); 
+
+void setup() 
+{
+  Serial.begin(9600);
+  BTserial.begin(9600);
+  pinMode(stepp,OUTPUT);
+  pinMode(dir,OUTPUT);
+  int encount=0;
+  int low=0,mid,high;
+  attachInterrupt(0,EncoderA,CHANGE);
+  attachInterrupt(1,EncoderB,CHANGE);
+  bool extF;
+  list<int>listRod;
+  list<int>listArvl; //queue를 사용해야 이상적이지만, 우리는 그냥 수시로 resset버튼 누릅시다...^^ 프로토타입이니까요 
+  listArvl.push_back(0);//listArvl=[0]
+
+  rodLen();
+}
+
+void loop() 
+{
+  if(BTserial.available()):
+    {
+      if (screen() != 0 or extForce() = 1):
+        {
+          if (screen() != 0):
+          //반자동모드
+          {
+            int steps = listRod[index] - listArvl[-1];
+            int direct = (steps_move>0) ? HIGH : LOW ;
+            digitalWrite(dirpin, direct); //positive steps : Cw, negative steps : CCW
+
+            for (int i = 0; i < steps; i++) //steps에 저장된 만큼 이동함
+              {
+                digitalWrite(stepPin, HIGH);
+                delayMicroseconds(500);
+                digitalWrite(stepPin, LOW);
+                delayMicroseconds(500);
+              }
+            listArvl.push_back(listRod[index]);
+          }
+          //모터 전원 차단
+        }
+      else:
+      //자동모드
+      //모터 전원 차단
+    }
+}
+
+void rodLen()//봉 길이 측정하고 리스트 listRod에 차례대로 0 50 100%에 해당하는 스텝수 저장 //엔코더 필요
+{
+  int rod = 0 // 봉길이 저장할 변수 rod
+  // 봉길이 측정 진행
+  listArvl.push_back(0);
+  listArvl.push_back(rod*0.5);
+  listArvl.push_back(rod);
+}
+
+void screen() //가림도
+{
+  char index = BTSerial.parseInt();
+  if (index < 4):
+      return index;
+}
+
+void extForce() // 외력 유무 판단(있 extF= 1, 없 extF 0), 엔코더 필요
+{
+  char index = BTSerial.parseInt();
+  if (index == 4):
+    {
+      //외력 유무 판단(있 extF= 1, 없 extF 0)
+
+      return extF;
+    }
+}
+
+//엔코더 파트
+void EncoderA(){
+  if(digitalRead(encoder_pin_a) == HIGH)){
+    if(digitalRead(encoder_pin_b) == LOW){
+      encount +=1;
+    else{
+       encount -=1 ;
+      }
+    }
+  }
+  else{
+    if(digitalRead(encoder_b) == HIGH){
+      encount +=1;
+    }
+    else{
+      encount -=1;
+    }
+  }
+}
+
+void EncoderB(){
+  if(digitalRead(encoder_pin_b) == HIGH)){
+    if(digitalRead(encoder_pin_a) == HIGH){
+      encount +=1;
+    else{
+       encount -=1 ;
+      }
+    }
+  }
+  else{
+    if(digitalRead(encoder_A) == LOW){
+      encount +=1;
+    }
+    else{
+      encount -=1;
+      }
+    }
+  }
+}
