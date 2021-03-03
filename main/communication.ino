@@ -14,7 +14,9 @@ String get_data()
         else                // 엔드코드 'Z'가 아닌 경우
             result = result + read_data;    // 읽어 온 문자를 문자열 뒤에 붙인다.
         
-    }  
+    } 
+
+    return "";
 }
 
 void setting_data(String ctrl_str)
