@@ -1,6 +1,8 @@
 #include <DHT.h>
 #include "sensor.h"
 #include "pinnum.h"
+#include "communication.h"
+
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN,DHTTYPE);
@@ -9,7 +11,7 @@ int cdsValue;
 int tem;
 
 void setup() {
-  
+  BTSerial.begin(9600);
 }
 
 void loop() {
