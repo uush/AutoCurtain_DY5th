@@ -6,14 +6,44 @@
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN,DHTTYPE);
+extern SoftwareSerial BTSerial;
+
+boolean Auto_mode = false;
 
 int cdsValue;
-int tem;
+int temp;
+int temp_th;
+int cds_th;
+bool tempMorethan;
+bool cdsMorethan;
+bool And;
 
-void setup() {
+
+void setup() 
+{
   BTSerial.begin(9600);
 }
 
-void loop() {
-  readSensor(&cdsValue, &tem);//&변수의 주소를 반환하는 연산자
+void loop() 
+{
+  setting_data();
+  readSensor(&cdsValue, &temp);
+  if(Auto_mode)
+  {
+    //자동모드
+    boolean open_condition = Check_condition(temp, temp_th, tempMorethan, cdsValue, cds_th, cdsMorethan, And);
+    if(open_condition)
+    {
+      //커튼 연다.
+    }
+    else
+    {
+      //커튼을 닫는다.
+    }
+  }
+  else
+  {
+    //수동모드
+  }
 }
+
