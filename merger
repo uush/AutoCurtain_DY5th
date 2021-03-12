@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include<SoftwareSerial>
+
+#define stepp 4 
+#define dir 5
+#define m_switch 6
+#define encoder_pin_a 2
+#define encoder_pin_b 3
+SoftwareSerial BTSerial(10,11);
+//블루투스 핀 번호가 바뀌었다고 알고있습니다. 수정 부탁드려요...^^
+int position_now = 0; //로터리엔코더로 현재 위치를 파악하고 그 위치를 이 변수에 저장함.
+int position = 0; //블루투스 통신으로 기기에 들어올 위치 (목표위치)
+void setup() 
+{
+  Serial.begin(9600);
+  BTserial.begin(9600);
+  pinMode(stepp,OUTPUT);
+  pinMode(dir,OUTPUT);
+  direct(); //방향 지정하는 함수
+  steps();// 이동할 정도 지정하는 함수
+  
+}
+
+void loop()
+{
+  if(BTserial.available())
+  {
+    if(extForce() = 0) //즉 외력이 기기에 작용하지 않을 때
+    {
+      direct = direct();
+      digitalWrite(dirpin, direct); //방향지정 positive steps : Cw, negative steps : CCW
+      steps = steps();
+      for (int i = 0; i < steps; i++) //이동 정도 지정_steps에 저장된 만큼 이동함
+      {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(500);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(500);
+      }
+      position_now = ; 로터리엔코더 이용하여 현재 위치 파악하고 이 변수에 저장함. 
+    }
+  }
+}
+
+void extForce()
+{
+  외력 존재 여부 확인 함수. 값이 1일 때를 외력 존재, 0일 때를 외력 없음으로 한다
+}
+void steps()
+{
+  int steps = abs(position-position_now);//움직여야 하는 스텝을 구하기 위해 차의 절댓값 구한것.
+}
+
+void direct()
+{
+  int direct = (position-position_now>0) ? HIGH : LOW ;
+}
