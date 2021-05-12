@@ -2,7 +2,7 @@
 void funcLength()
 {
     if (bluetooth.available())
-        // if "측정" 상황일 때
+        if (mode_meas==1)
         {
             if ((currentCLK != lastCLK)  && currentCLK == 0)
              {
