@@ -3,7 +3,6 @@
 #include <DHT.h>
 #define DHTTYPE DHT11
 
-DHT dht(DHTPIN,DHTTYPE); //객체생성
 
 void readSensor(int * cds, int * temp)
 {
