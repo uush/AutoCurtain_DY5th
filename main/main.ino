@@ -22,6 +22,7 @@ bool And;
 void setup() 
 {
   BTSerial.begin(9600);
+  dht.begin(9600);
 }
 
 void loop() 
