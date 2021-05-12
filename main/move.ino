@@ -6,7 +6,7 @@
 #define stepp 4 
 #define dir 5
 
-void main() 
+void setup() 
 {
     int pos_i = extern count
 }
