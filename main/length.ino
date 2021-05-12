@@ -4,7 +4,7 @@ void funcLength()
     if (bluetooth.available())
         if (mode_meas==1)
         {
-            if ((currentCLK != lastCLK)  && currentCLK == 0)
+            if ((extern currentCLK != extern lastCLK)  && extern currentCLK == 0)
              {
                 x ++;
              }
