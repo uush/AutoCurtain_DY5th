@@ -3,7 +3,7 @@
 int x;
 int y;
 int length;
-void funcLength();
+int funcLength();
 int mode_meas;
 int count;
 int currentCLK;
