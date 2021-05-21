@@ -5,7 +5,7 @@
 
 #define DHTTYPE DHT11
 
-DHT dht(DHTPIN,DHTTYPE);
+extern DHT dht;
 extern SoftwareSerial BTSerial;
 
 boolean Auto_mode = false;
@@ -22,6 +22,7 @@ bool And;
 void setup() 
 {
   BTSerial.begin(9600);
+  dht.begin(9600);
 }
 
 void loop() 

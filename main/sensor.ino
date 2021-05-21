@@ -1,9 +1,10 @@
 #include "sensor.h"
 #include "pinnum.h"
 #include <DHT.h>
+
 #define DHTTYPE DHT11
 
-DHT dht(DHTPIN,DHTTYPE); //객체생성
+DHT dht(DHTPIN,DHTTYPE);
 
 void readSensor(int * cds, int * temp)
 {
