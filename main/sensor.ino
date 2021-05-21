@@ -4,6 +4,7 @@
 
 #define DHTTYPE DHT11
 
+
 DHT dht(DHTPIN,DHTTYPE);
 
 void readSensor(int * cds, int * temp)
