@@ -68,7 +68,7 @@ void setting_data()
                 case 'P' : 
                     position = value;
             }
-    
+
         }
     }
 }
