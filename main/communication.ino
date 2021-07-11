@@ -24,6 +24,8 @@ String get_data()
             result = result + read_data;    // 읽어 온 문자를 문자열 뒤에 붙인다.
         
     }  //P343ZA293Z
+
+    return "";
 }
 
 
@@ -51,7 +53,7 @@ void setting_data()
                     break;
 
                 case 'O' :
-                    And = (boolean)value;   //sensor.ino
+                    And = (boolean)value;   //sensor.ino  0과 1을 boolean타입으로 변경후 사용
                     break;
 
                 case 'U' :
@@ -63,7 +65,7 @@ void setting_data()
                     break;
                 
                 case 'M' : 
-                    mode_meas = value;
+                    mode_meas = value;  //0과 1을 가져와 모터 측정 상태 변경
 
                 case 'P' : 
                     position = value;
